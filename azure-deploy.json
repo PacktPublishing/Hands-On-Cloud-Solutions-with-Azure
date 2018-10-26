@@ -1,0 +1,94 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the administrator account of the new VM and domain"
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The password for the administrator account of the new VM and domain"
+      }
+    },
+    "PrivateSubnet": {
+      "type": "string",
+      "defaultValue": "10.0.1.0/24",
+      "metadata": { "description": "Private VNet IP Subnet" }
+    }
+  },
+"variables": {
+    "GroupStart": "[split(parameters('PrivateSubnet'), '.')[0]]",
+    "GroupMain": "[split(parameters('PrivateSubnet'), '.')[1]]",
+    "GroupNumber": "[split(parameters('PrivateSubnet'), '.')[2]]",
+    "instWin1": "[concat(variables('GroupMain'),'-',variables('GroupNumber'),'-Win1')]",
+    "instWin1NIC": "[concat(variables('GroupMain'),'-',variables('GroupNumber'),'-Win1NIC')]",
+    "NetworkVNetID": "[resourceId('Microsoft.Network/virtualNetworks', 'NetworkVNet')]",
+    "PrivateSubnetName": "PrivateSubnet",
+    "PrivateSubnetRef": "[concat(variables('NetworkVNetID'), '/subnets/', variables('PrivateSubnetName'))]"
+  },
+"resources": [
+    {
+      "apiVersion": "2016-03-30",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('instWin1NIC')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', 'NetworkVNet')]"
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Static",
+              "privateIPAddress": "[concat(variables('GroupStart'),'.',variables('GroupMain'),'.',variables('GroupNumber'),'.31')]",
+              "subnet": {
+                "id": "[variables('PrivateSubnetRef')]"
+              }
+            }
+          }
+        ]
+      }
+    }
+{
+    "apiVersion": "2016-04-30-preview",
+    "type": "Microsoft.Compute/virtualMachines",
+    "name": "[variables('instWin1')]",
+    "location": "[resourceGroup().location]",
+    "dependsOn": [
+      "[resourceId('Microsoft.Network/networkInterfaces/', variables('instWin1NIC'))]"
+    ],
+    "properties": {
+      "hardwareProfile": { "vmSize": "Standard_DS1" },
+      "osProfile": {
+        "computerName": "[variables('instWin1')]",
+        "adminUsername": "[parameters('adminUsername')]",
+        "adminPassword": "[parameters('adminPassword')]"
+      },
+      "storageProfile": {
+        "imageReference": {
+          "publisher": "MicrosoftWindowsServer",
+          "offer": "WindowsServer",
+          "sku": "2012-R2-Datacenter",
+          "version": "latest"
+        },
+        "osDisk": {
+          "createOption": "FromImage",
+          "caching": "ReadWrite"
+        }
+      },
+      "networkProfile": {
+        "networkInterfaces": [
+          {
+            "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('instWin1NIC'))]"
+          }
+        ]
+      }
+    }
+  }
+  ]
+}
