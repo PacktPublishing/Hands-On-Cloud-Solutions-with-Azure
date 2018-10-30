@@ -9,3 +9,6 @@
 ```
 Login-AzureRmAccount or Login-AzAccount
 ```
+'''
+get-azurermsubscription or get-azsubscription
+'''
