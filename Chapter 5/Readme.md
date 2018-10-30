@@ -12,3 +12,6 @@ Install-Package Microsoft.Owin.Security.OpenIdConnect
 Install-Package Microsoft.Owin.Security.Cookies
 Install-Package Microsoft.Owin.Host.SystemWeb
 ```
+
+# Logging Imports
+install-package Microsoft.ApplicationInsights.NLogTarget
