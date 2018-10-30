@@ -6,6 +6,6 @@
 *	Azure Blueprints - https://docs.microsoft.com/en-us/azure/governance/blueprints/
 
 # Good PowerShell Servlets
-...
+```
 Login-AzureRmAccount or Login-AzAccount
-...
+```
