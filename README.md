@@ -1,3 +1,15 @@
+
+### Get this product for $5
+
+<i>Packt is having its biggest sale of the year. Get this eBook or any other book, video, or course that you like just for $5 each</i>
+
+
+<b><p align='center'>[Buy now](https://packt.link/9781786468659)</p></b>
+
+
+<b><p align='center'>[Buy similar titles for just $5](https://subscription.packtpub.com/search)</p></b>
+
+
 # Hands-On Cloud Solutions with Azure
 
 <a href="https://www.packtpub.com/virtualization-and-cloud/hands-cloud-solutions-azure?utm_source=github&utm_medium=repository&utm_campaign=9781786468659"><img src="https://dz13w8afd47il.cloudfront.net/sites/default/files/imagecache/ppv4_main_book_cover/B05825.png" alt="Hands-On Cloud Solutions with Azure" height="256px" align="right"></a>
